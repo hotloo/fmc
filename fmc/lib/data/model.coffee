@@ -1,4 +1,6 @@
-jStat = require 'jStat'
+
+normal = (mean,variance) ->
+  
 
 normalize_feature = (data) ->
   titles = get_title_data().fetch()
@@ -60,6 +62,7 @@ normalize_feature = (data) ->
     doc.featureVector = featureVector
     featureMatrix.push doc
   return featureMatrix
+
   
 interpretTitle = (positionScore,mean,std) ->
   positionScore = ( ( eachPositionScore * std ) + mean for eachPositionScore in positionScore )
@@ -150,7 +153,7 @@ position_length = (sample, candidates, length_suggesions) ->
   std = Math.sqrt(sigma)
   length = []
   for i in length_suggesions
-    length.push jStat.normal(mu,std)
+    length.push normal(mu,std)
   work_time = []
   for i in length_suggesions
     if i is 0
