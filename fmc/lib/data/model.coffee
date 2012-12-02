@@ -1,3 +1,4 @@
+jStat = require 'jStat'
 
 normalize_feature = (data) ->
   titles = get_title_data().fetch()
@@ -59,6 +60,44 @@ normalize_feature = (data) ->
     doc.featureVector = featureVector
     featureMatrix.push doc
   return featureMatrix
+  
+interpretTitle = (positionScore,mean,std) ->
+  positionScore = ( ( eachPositionScore * std ) + mean for eachPositionScore in positionScore )
+  company_score = title_score = Math.ceil(Math.sqrt(positionScore * 5))
+  if company_score is 5
+    company_size = "10,001+ employees"
+  if company_score is 4
+    company_size = "5001-10000 employess"
+  if company_score is 3
+    company_size = "1001-5000 employess"
+  if company_score is 2
+    company_size = "201-1000 employess"
+  if company_score is 1
+    company_size = "51-200 employess"
+  if company_score is 1
+    company_size = "11-50 employess"
+  if company_score is 1
+    company_size = "1-10 employess"
+  
+  titles = get_title_data()
+  
+  if title_score is 5
+    randI = Math.floor( Math.random() * titles.top.length )
+    title = title.top[randI]
+  if title_score is 5
+    randI = Math.floor( Math.random() * titles.top.length )
+    title = title.top[randI]
+  if title_score is 5
+    randI = Math.floor( Math.random() * titles.top.length )
+    title = title.top[randI]
+  if title_score is 5
+    randI = Math.floor( Math.random() * titles.top.length )
+    title = title.top[randI]
+  if title_score is 5
+    randI = Math.floor( Math.random() * titles.top.length )
+    title = title.top[randI]
+  
+  return [title,company_size]
  
 cosine_similarity = (sample_1, sample_2) ->
   nominator = [sample_i * sample_2[i] for sample_i, i in sample_1].reduce (a,b) -> a + b
@@ -105,14 +144,29 @@ position_length = (sample, candidates, length_suggesions) ->
   mu = (candidate.elapsedTime for candidate in candidates).reduce (c,i) -> c += i
   mu = mu + sample.elapsedTime
   mu = mu / ( candidates.length + 1.0 )
-  sigma = 
-
+  sigma = ((candidate.elapsedTime - mu) * (candidate.elapsedTime - mu) for candidate in candidates).reduce (c,i) -> c += i
+  sigma = sigma + (sample.elapsedTime - mu) * (sample.elapsedTime - mu)
+  sigma = sigma / candidates.length
+  std = Math.sqrt(sigma)
+  length = []
+  for i in length_suggesions
+    length.push jStat.normal(mu,std)
+  work_time = []
+  for i in length_suggesions
+    if i is 0
+      work_time[i].startDate = presentPoint + 1
+      work_time[i].stopDate = presentPoint + length[i]
+      continue
+    work_time[i].startDate = work_time[i-1].stopDate + 1
+    work_time[i].stopDate = work_time[i-1].stopDate + length[i]
+  return work_time
+  
 collaborative_filtering = (test_sample, train_samples, k, dist_func) -> 
   distances = ( dist_func( test_sample.featureVector, train_sample.featureVector ) for train_sample in train_samples )
   topSimilarUsers = fetch_top_samples(train_samples, distances, k)
   recommendedPosition = position_proposal(test_sample, topSimilarUsers, k)
   recommendedTimes = position_length(test_sample, topSimilarUsers, k)
-  return recommendedPosition
+  return [recommendedPosition,recommendedTimes]
 
 recommend = (user,k = 2) ->
   k = 5 if k > 5
@@ -120,6 +174,17 @@ recommend = (user,k = 2) ->
   user = [user] unless user instanceof Array
   positions = get_user_data()
   features = normalize_feature(positions)
+  mean = (sample.featureVector for sample in features).reduce (c,i) -> c += i
+  mean = mean / feature.length
+  sigma = ( (sample.featureVector - mean) * (sample.featureVector - mean) for sample in features).reduce (c,i) -> c += i
+  std = Math.sqrt( sigma / (features.length - 1 ) )
+  normalizedFeatures = ( ( feature.featureVector - mean ) / std for feature in features )
   userFeature = normalize_features(user)
-  recommendation = collaborative_filtering(userFeature,features,k,cosine_similarity)
+  normalizedUserFeature = ( ( feature.featureVector - mean ) / std for feature in features )
+  [recommendedPosition,recommendedTimes] = collaborative_filtering(normalizedUserFeature,normalizedfeatures,k,cosine_similarity)
+  recommendation = []
+  for i in k
+    recommendation[i] = {}
+    recommendation[i].title = interpretTitle(recommendedPosition[i],mean,std)
+    recommendation[i].time = recommendedTimes[i]
   return recommendation
