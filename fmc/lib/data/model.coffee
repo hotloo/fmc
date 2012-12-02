@@ -1,6 +1,6 @@
 
 normal = (mean,variance) ->
-  
+  return ( Math.random * Math.sqrt(variance) ) + mean
 
 normalize_feature = (data) ->
   titles = get_title_data().fetch()
