@@ -1,6 +1,9 @@
 Meteor.publish "users", () ->
   Users.find {}
 
+Meteor.publish "titles", () ->
+  Titles.find {}
+
 getAccessToken = (code) ->
   console.log "code", code
   return null unless code

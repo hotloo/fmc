@@ -1,14 +1,6 @@
-# require = __meteor_bootstrap__.require
-# jstat = require 'jStat'
-# fs = require 'fs'
 
 normalize_feature = (data) ->
-  titles = {}
-  title['top_title_examples'] = fs.readFile '../top_level.csv', utf8, content -> top_title_examples = content
-  title['senior_title_examples'] = fs.readFile '../senior_level.csv', utf8, content -> senior_title_examples = content
-  title['middle_title_examples'] = fs.readFile '../middle_level.csv', utf8, content -> middle_title_examples = content
-  title['junior_title_examples'] = fs.readFile '../junior_level.csv', utf8, content -> junior_title_examples = content
-  title['low_title_examples'] = fs.readfile '../low_level.csv', utf8, content -> low_title_examples = content
+  titles = get_title_data().fetch()
 
   check_title = (title,example_titles) ->
     if title in example_titles.top_title_examples
@@ -109,10 +101,10 @@ collaborative_filtering = (test_sample, train_samples, k, dist_func) ->
   recommendedPosition = position_proposal(test_sample, topSimilarUsers, k)
   return recommendedPosition
 
-Meteor.recommend = (user,k = 2) ->
+recommend = (user,k = 2) ->
   k = 5 if k > 5
   # Here comes the recommendation/prediction
-  user = [user] if user instanceof Array
+  user = [user] unless user instanceof Array
   positions = get_user_data()
   features = normalize_feature(positions)
   userFeature = normalize_features(user)

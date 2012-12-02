@@ -1,5 +1,6 @@
 Meteor.autosubscribe ->
   Meteor.subscribe("users")
+  Meteor.subscribe("titles")
 
 class Router extends Backbone.Router
   routes:
