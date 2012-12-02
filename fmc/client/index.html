@@ -25,8 +25,8 @@
 
 <template name="indexTemplate">
     <div class="tagline">So, what are you gonna be when you grow up?</div>
-    <a id="login" class="button">Find out with Linkedin</a>
-    <div class="disclaimer">We only use your past work experience.</div>
+    <a id="login" href="https://api.singly.com/oauth/authenticate?client_id=2c546e7315c4fbf5fe439fe04821925e&redirect_uri=http://localhost:3000/callback&service=linkedin" class="button">Find out with Linkedin</a>
+    <div class="disclaimer">We only use work experience.</div>
 </template>
 
 <template name="headerTemplate">
@@ -37,7 +37,7 @@
     <footer id="footer">
         <div id="footer-content">
             <h2>About</h2>
-            <p>Ratrace uses your LinkedIn profile and some hitech ninja tactics in order to show you what your future career will look like. Ratrace was built by Anders, Hung and Tele during AngelHack Fall 2012 Silicon Valley. All right reserved and all that stuff.</p>
+            <p>Ratrace applies some hitech ninja tactics on your LinkedIn profile and shows you what your future career will look like. Ratrace was built by Tele, Hung and Anders during AngelHack Fall 2012 Silicon Valley. All right reserved and all that stuff.</p>
             <p><img class="singly-button" src="singly-button.png"/><a id="go-up" href="#header">go up &uarr;</a></p>
         </div>
 
