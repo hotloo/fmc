@@ -2,7 +2,25 @@
 
 if Meteor.isServer
   Meteor.startup ->
-    
+    console.log "Startup!" 
+    positions = get_user_data()
+    console.log "Started, positions: ", positions
+    titles = []
+    for position in positions
+      titles.push position.title
+    titles_coll = {}
+    i = 0
+    while i < titles.length
+      i += 5
+      return if i + 5 > titles_coll.length
+      titles_coll.top = titles[i]
+      titles_coll.senior = titles[i+1]
+      titles_coll.middle = titles[i+2]
+      titles_coll.junior = titles[i+3]
+      titles_coll.low = titles[i+4]
+    Titles.remove({})
+    Titles.insert(titles_coll)
+      
 import_data = (callback)->
   fs.readFile("../../stats/sample.json", "utf8", (err, content)->
     return null unless content
@@ -12,11 +30,11 @@ import_data = (callback)->
   )
 
 get_user_data = ()->
-  Users.find({}, (users)-> 
-    positions = []
-    for user in users
-      positions.push user.data.positions.value
-    return positions
-  )
+  console.log "get_user_data"
+  Users.find({}).fetch()
 
+get_title_data = (callback)->
+  Titles.find {}, (titles) ->
+    title = titles[0]
+    callback title
 

@@ -1,5 +1,6 @@
 Meteor.autosubscribe ->
   Meteor.subscribe("users")
+  Meteor.subscribe("titles")
 
 class Router extends Backbone.Router
   routes:
@@ -19,11 +20,11 @@ class Router extends Backbone.Router
 
 
   callback: (params) ->
-
     if params?.code
-        console.log "getAccessToken", params.code
-        userId = Meteor.call "createUser", params.code
-        Session.set "currentUserId", userId
+      console.log "getAccessToken", params.code
+      Meteor.call "createUser", params.code, (error, userId)=>
+        console.log "--userId", userId
+        Session.set("currentUserId", userId)
         $('#container')
           .hide()
           .html(Meteor.render(Template.callbackTemplate))
