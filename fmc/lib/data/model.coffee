@@ -210,7 +210,10 @@ position_length = (sample, candidates, length_suggestions) ->
     sigma = sigma + ( (num - mu) * (num - mu) for num in mu_sample_list).reduce (c,i) -> c += i
   catch error
     sigma = sigma + ( (num - mu) * (num - mu) for num in mu_sample_list)[0]
-  sigma = sigma / ( mu_list.length + mu_sample_list.length - 1)
+  try
+    sigma = sigma / ( mu_list.length + mu_sample_list.length - 1)
+  catch error
+    sigma = 1
   std = Math.sqrt(sigma)
   length = []
   for i in [0..length_suggestions]
