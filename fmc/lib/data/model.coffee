@@ -137,7 +137,6 @@ fetch_top_samples = (data,scale,k) ->
   return top
 
 position_proposal = (sample, candidates, length_suggestions) ->
-  console.log sample
   presentPoint = ( parseInt( position.endDate ) for position in sample.doc )
   presentPoint = Math.max presentPoint...
   presentPoint = new Date(presentPoint * 1000)
@@ -161,15 +160,17 @@ position_length = (sample, candidates, length_suggesions) ->
   presentYear = presentPoint.getFullYear()
   presentMonth = presentPoint.getMonth()
   presentIndex = (presentYear - 2000) * 12.0 + presentMonth
-  console.log presentIndex
   mu_list = []
   for candidate in candidates
     mu_list.push (can_doc.elapsedTime for can_doc in candidate.doc)...
+  mu_list = mu_list.filter(isNaN)
+  mu = mu_list.reduce (c,i) -> c += 1
   console.log mu_list
-  console.log candidates
-  mu = mu_list.reduce (c,i) -> c += i
-  mu = mu +  (position.elapsedTime for position in sample.doc).reduce (c,i) -> c += i
-  mu = mu / ( mu_list.length + sample.doc.length )
+  mu_sample_list = (position.elapsedTime for position in sample.doc).filter(isNaN)
+  mu = mu + mu_sample_list.reduce (c,i) -> c+= i
+  console.log mu
+  mu = mu / ( mu_list.length + mu_sample_list.length )
+  console.log mu
   sigma = ((candidate.elapsedTime - mu) * (candidate.elapsedTime - mu) for candidate in candidates).reduce (c,i) -> c += i
   sigma = sigma + (sample.elapsedTime - mu) * (sample.elapsedTime - mu)
   sigma = sigma / candidates.length
