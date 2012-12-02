@@ -4,6 +4,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <script src="backbone.queryparams.js"></script>
     <link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+    {{> analyticsTemplate }}
 </head>
 
 <body>
@@ -42,6 +43,22 @@
             <p><img class="singly-button" src="singly-button.png"/><a id="go-up" href="">go up &uarr;</a></p>
         </div>
     </footer>
+</template>
+
+<template name="analyticsTemplate">
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-36722690-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+
+    </script>
 </template>
 
 

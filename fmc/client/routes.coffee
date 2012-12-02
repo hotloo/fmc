@@ -41,6 +41,7 @@ class Router extends Backbone.Router
           amplify.store("currentUserId", userId) 
           @navigate 'resume', {trigger: true}
 
+
   resume: ->
     $('#rat').hide()
     $('#about-link').hide()
