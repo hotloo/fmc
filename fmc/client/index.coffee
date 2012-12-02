@@ -23,6 +23,13 @@ Template.resumeTemplate.events
     event.preventDefault()
     window.router.navigate "", {trigger: true}
 
+Template.resumeTemplate.pictureUrl = ->
+  Meteor.user().data.pictureUrl if Meteor.user().data
+
+Template.resumeTemplate.name = ->
+  if Meteor.user().data
+    Meteor.user().data.firstName + ' ' + Meteor.user().data.lastName
+  else "Your Resume"
 
 #    authUrl = "https://api.singly.com/oauth/authenticate"
 #    clientId = "2c546e7315c4fbf5fe439fe04821925e"
