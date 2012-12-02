@@ -5,6 +5,9 @@ Template.bodyTemplate.events
 
     $("html, body").stop().animate
       scrollTop: $(target).offset().top
+      
+Template.bodyTemplate.currentUser = ->
+  Meteor.user()
 
 Template.indexTemplate.events
   "click #login": ->

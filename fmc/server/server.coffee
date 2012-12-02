@@ -1,10 +1,5 @@
 Meteor.publish "users", () ->
-  Users.find {}, 
-    fields:
-      profile: 1
-      username: 1
-      email: 1
-      services: 1
+  Users.find {}
 
 getAccessToken = (code) ->
   console.log "code", code
@@ -17,7 +12,7 @@ getAccessToken = (code) ->
   throw result.error if result.error
   data = result.data
   throw new Meteor.Error 500, "Couldn't find access token" unless data
-  console.log "data", data, data.access_token
+  console.log "data", data
   data.access_token
 
 getIdentity = (accessToken) ->
