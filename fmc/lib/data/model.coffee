@@ -1,6 +1,5 @@
 
-normal = (mean,variance) ->
-  return ( Math.random * Math.sqrt(variance) ) + mean
+normal = (mean,std) -> ( Math.random() * std ) + mean
 
 normalize_feature = (data) ->
   titles = get_title_data().fetch()[0]
@@ -96,26 +95,33 @@ interpretTitle = (positionScore,mean,std) ->
     company_size = "11-50 employess"
   if company_score is 1
     company_size = "1-10 employess"
+  else
+    company_size = "Seems tricky size"
   
-  titles = get_title_data()
-  
+  titles = get_title_data().fetch()[0]
+
   if title_score is 5
     randI = Math.floor( Math.random() * titles.top.length )
-    title = title.top[randI]
-  if title_score is 5
-    randI = Math.floor( Math.random() * titles.top.length )
-    title = title.top[randI]
-  if title_score is 5
-    randI = Math.floor( Math.random() * titles.top.length )
-    title = title.top[randI]
-  if title_score is 5
-    randI = Math.floor( Math.random() * titles.top.length )
-    title = title.top[randI]
-  if title_score is 5
-    randI = Math.floor( Math.random() * titles.top.length )
-    title = title.top[randI]
-  
-  return [title,company_size]
+    title = titles.top[randI]
+  if title_score is 4
+    randI = Math.floor( Math.random() * titles.senior.length )
+    title = titles.senior[randI]
+  if title_score is 3
+    randI = Math.floor( Math.random() * titles.middle.length )
+    title = titles.middle[randI]
+  if title_score is 2
+    randI = Math.floor( Math.random() * titles.junior.length )
+    title = titles.junior[randI]
+  if title_score is 1
+    randI = Math.floor( Math.random() * titles.low.length )
+    title = titles.low[randI]
+  else
+    randI = Math.floor( Math.random() * titles.low.length )
+    title = titles.low[randI]
+  info = {}
+  info.name = title
+  info.size = company_size
+  return info
  
 cosine_similarity = (sample_1, sample_2) ->
   nominator = (sample_i * sample_2[i] for sample_i, i in sample_1).reduce (a,b) -> a + b
@@ -153,7 +159,7 @@ position_proposal = (sample, candidates, length_suggestions) ->
     recommendations.push recommendedScore
   return recommendations
 
-position_length = (sample, candidates, length_suggesions) ->
+position_length = (sample, candidates, length_suggestions) ->
   presentPoint = ( parseInt( position.endDate ) for position in sample.doc )
   presentPoint = Math.max presentPoint...
   presentPoint = new Date(presentPoint * 1000)
@@ -163,29 +169,33 @@ position_length = (sample, candidates, length_suggesions) ->
   mu_list = []
   for candidate in candidates
     mu_list.push (can_doc.elapsedTime for can_doc in candidate.doc)...
-  mu_list = mu_list.filter(isNaN)
+  mu_list = mu_list.filter (mu)-> not isNaN(mu)
   mu = mu_list.reduce (c,i) -> c += 1
-  console.log mu_list
-  mu_sample_list = (position.elapsedTime for position in sample.doc).filter(isNaN)
+  mu_sample_list = (position.elapsedTime for position in sample.doc).filter (mu) -> not isNaN(mu)
   mu = mu + mu_sample_list.reduce (c,i) -> c+= i
-  console.log mu
   mu = mu / ( mu_list.length + mu_sample_list.length )
-  console.log mu
-  sigma = ((candidate.elapsedTime - mu) * (candidate.elapsedTime - mu) for candidate in candidates).reduce (c,i) -> c += i
-  sigma = sigma + (sample.elapsedTime - mu) * (sample.elapsedTime - mu)
-  sigma = sigma / candidates.length
+  sigma = ( (num - mu) * (num - mu) for num in mu_list).reduce (c,i) -> c += i
+  sigma = sigma + ( (num - mu) * (num - mu) for num in mu_sample_list).reduce (c,i) -> c += i
+  sigma = sigma / ( mu_list.length + mu_sample_list.length - 1)  
   std = Math.sqrt(sigma)
   length = []
-  for i in length_suggesions
+  for i in [0..length_suggestions]
     length.push normal(mu,std)
   work_time = []
-  for i in length_suggesions
+  presentPoint = ( parseInt( position.endDate ) for position in sample.doc )
+  presentPoint = Math.max presentPoint...
+  for i in [0..length_suggestions]
     if i is 0
-      work_time[i].startDate = presentPoint + 1
-      work_time[i].stopDate = presentPoint + length[i]
+      work_time_temp = {}
+      work_time_temp.startDate = presentPoint + 1
+      work_time_temp.stopDate = presentPoint + length[i]
+      work_time.push work_time_temp
       continue
-    work_time[i].startDate = work_time[i-1].stopDate + 1
-    work_time[i].stopDate = work_time[i-1].stopDate + length[i]
+    work_time_temp = {}
+    work_time_temp.startDate = work_time[i-1].stopDate + 1
+    work_time_temp.stopDate = work_time[i-1].stopDate + length[i]
+    work_time.push work_time_temp
+    
   return work_time
   
 collaborative_filtering = (test_sample, train_samples, k, dist_func) -> 
@@ -213,9 +223,10 @@ recommend = (user,k = 2) ->
   recommendations = []
   for userFeature in userFeatures
     [recommendedPosition,recommendedTimes] = collaborative_filtering(userFeature,features,k,cosine_similarity)
-    for i in k
+    for i in [0..k]
       recommendation = {}
       recommendation.title = interpretTitle(recommendedPosition[i],mean,std)
       recommendation.time = recommendedTimes[i]
+      console.log recommendation
       recommendations.push recommendation
   return recommendations
