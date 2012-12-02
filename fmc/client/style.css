@@ -165,53 +165,53 @@ p {
     }
 }
 
+/*@media (min-width:1100px) {*/
+    /*#container {*/
+        /*height: 650px;*/
+    /*}*/
+
+    /*#container .tagline {*/
+        /*padding: 250px 30px 130px 30px;*/
+    /*}*/
+
+    /*#resume-container {*/
+        /*min-height: 650px;*/
+    /*}*/
+
+    /*#callback-container .tagline {*/
+        /*padding: 225px 30px 100px 30px;*/
+    /*}*/
+/*}*/
+
+/*@media (min-width:900px) {*/
+    /*#container {*/
+        /*height: 550px;*/
+    /*}*/
+
+    /*#container .tagline {*/
+        /*padding: 210px 30px 90px 30px;*/
+    /*}*/
+
+    /*#resume-container {*/
+        /*min-height: 550px;*/
+    /*}*/
+
+    /*#callback-container .tagline {*/
+        /*padding: 275px 30px 100px 30px;*/
+    /*}*/
+/*}*/
+
 @media (min-width:1100px) {
     #container {
-        height: 650px;
+        height: 600px;
     }
 
     #container .tagline {
-        padding: 250px 30px 130px 30px;
+        padding: 210px 30px 110px 30px;
     }
 
     #resume-container {
-        min-height: 650px;
-    }
-
-    #callback-container .tagline {
-        padding: 225px 30px 100px 30px;
-    }
-}
-
-@media (min-width:900px) {
-    #container {
-        height: 650px;
-    }
-
-    #container .tagline {
-        padding: 210px 30px 90px 30px;
-    }
-
-    #resume-container {
-        min-height: 650px;
-    }
-
-    #callback-container .tagline {
-        padding: 275px 30px 100px 30px;
-    }
-}
-
-@media (min-width:1100px) {
-    #container {
-        height: 650px;
-    }
-
-    #container .tagline {
-        padding: 230px 30px 110px 30px;
-    }
-
-    #resume-container {
-        min-height: 650px;
+        min-height: 600px;
     }
 
     #callback-container .tagline {
@@ -221,15 +221,15 @@ p {
 
 @media (min-width:1500px) {
     #container {
-        height: 750px;
+        height: 700px;
     }
 
     #container .tagline {
-        padding: 270px 30px 150px 30px;
+        padding: 250px 30px 150px 30px;
     }
 
     #resume-container {
-        min-height: 750px;
+        min-height: 700px;
     }
 
     #callback-container .tagline {
