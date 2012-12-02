@@ -84,7 +84,7 @@ position_proposal = (sample, candidates, length_suggestions) ->
   presentPoint = Date(presentPoint * 1000)
   presentYear = presentPoint.getYear()
   presentMonth = presentPoint.getMonth()
-  presentIndex = presentYear - 2005 + presentMonth
+  presentIndex = (presentYear - 2005) * 12.0 + presentMonth
   user_average = sample.featureVector.reduce (c,i) -> c += i
   user_average = user_average / sample.length
   recommendations = []
@@ -95,10 +95,23 @@ position_proposal = (sample, candidates, length_suggestions) ->
     recommendations.push recommendedScore
   return recommendations
 
+position_length = (sample, candidates, length_suggesions) ->
+  presentPoint = (position.endDate for position in sample).max (array) -> 
+    Math.max.apply Math,array
+  presentPoint = Date(presentPoint * 1000)
+  presentYear = presentPoint.getYear()
+  presentMonth = presentPoint.getMonth()
+  presentIndex = (presentYear - 2005) * 12.0 + presentMonth
+  mu = (candidate.elapsedTime for candidate in candidates).reduce (c,i) -> c += i
+  mu = mu + sample.elapsedTime
+  mu = mu / ( candidates.length + 1.0 )
+  sigma = 
+
 collaborative_filtering = (test_sample, train_samples, k, dist_func) -> 
   distances = ( dist_func( test_sample.featureVector, train_sample.featureVector ) for train_sample in train_samples )
   topSimilarUsers = fetch_top_samples(train_samples, distances, k)
   recommendedPosition = position_proposal(test_sample, topSimilarUsers, k)
+  recommendedTimes = position_length(test_sample, topSimilarUsers, k)
   return recommendedPosition
 
 recommend = (user,k = 2) ->
