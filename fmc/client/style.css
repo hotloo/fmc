@@ -13,6 +13,7 @@ html, body {
 a {
     color: #333333;
     font-size: 16px;
+    text-decoration: none;
 }
 
 body {
@@ -32,9 +33,9 @@ header {
     height: 70px;
     background: #FFF;
 
-    -moz-box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
-    -webkit-box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0 3px 4px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0 3px 4px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.3);
 }
 
 header h1 {
@@ -106,19 +107,8 @@ p {
         text-align: center;
     }
 
-@media (max-width:500px) {
-    #container {
-        height: 350px;
-        height: 100%;
-    }
-
-    #container .tagline {
-        padding: 100px 20px 30px 20px;
-    }
-
-    #callback-container .tagline {
-        padding: 170px 30px 100px 30px;
-    }
+#callback-container .tagline {
+    padding: 250px 30px 100px 30px;
 }
 
 #resume-container {
@@ -129,15 +119,15 @@ p {
     padding-bottom: 50px;
     background-color: white;
 
-    opacity:0.7;
-    filter:alpha(opacity=70)
+    opacity:0.5;
+    filter:alpha(opacity=50)
 
     /*-moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);*/
     /*-webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);*/
     /*box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);*/
     }
     #resume-container h2 {
-        font-size: 40px;
+        font-size: 35px;
         padding-top: 50px;
         margin: 0 50px 20px 10%;
 
@@ -154,6 +144,24 @@ p {
         font-weight: bold;
     }
 
+@media (max-width:500px) {
+    #container {
+        height: 100%;
+    }
+
+    #resume-container {
+        min-height: 200px;
+    }
+
+    #container .tagline {
+        padding: 100px 20px 30px 20px;
+    }
+
+    #callback-container .tagline {
+        padding: 170px 30px 100px 30px;
+    }
+}
+
 @media (min-width:1200px) {
     #container {
         height: 700px;
@@ -165,6 +173,10 @@ p {
 
     #resume-container {
         min-height: 700px;
+    }
+
+    #callback-container .tagline {
+        padding: 350px 30px 100px 30px;
     }
 }
 
@@ -181,6 +193,9 @@ p {
         min-height: 750px;
     }
 
+    #callback-container .tagline {
+        padding: 375px 30px 100px 30px;
+    }
 }
 
 .rounded {
@@ -234,7 +249,6 @@ p {
     margin: 0 auto;
     margin-bottom: 60px;
     font-weight: 200;
-
 }
 
 #footer-content p {
@@ -245,6 +259,10 @@ p {
     float: right;
     color: #BBB;
     text-decoration: none;
+}
+
+#go-up:active {
+    text-shadow: 0 0 15px white;
 }
 
 .singly-button {

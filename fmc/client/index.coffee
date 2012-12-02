@@ -2,28 +2,31 @@ Template.bodyTemplate.events
   "click #logo": (event) ->
     event.preventDefault()
     window.router.navigate "", {trigger: true}
+
   "click #about-link": (event) ->
     event.preventDefault()
     target = $(event.currentTarget).attr("href")
 
     $("html, body").stop().animate
       scrollTop: $(target).offset().top
-      
-Template.bodyTemplate.currentUser = ->
-  Meteor.user()
 
   "click #go-up": (event) ->
     $("html, body").stop().animate
       scrollTop: 0
+      
+Template.bodyTemplate.currentUser = ->
+  Meteor.user()
 
-Template.indexTemplate.events
-  "click #login": ->
-    authUrl = "https://api.singly.com/oauth/authenticate"
-    clientId = "2c546e7315c4fbf5fe439fe04821925e"
-    redirectUri = "http://localhost:3000/callback"
-
-    window.location = authUrl + "?client_id=" + clientId + "&redirect_uri=" + redirectUri + "&service=linkedin"
-    console.log authUrl + "?client_id=" + clientId + "&redirect_uri=" + redirectUri + "&service=linkedin"
+#Template.indexTemplate.events
+#  "click #login": (event) ->
+#    event.preventDefault()
+#
+#    authUrl = "https://api.singly.com/oauth/authenticate"
+#    clientId = "2c546e7315c4fbf5fe439fe04821925e"
+#    redirectUri = "http://localhost:3000/callback"
+#
+#    window.location = authUrl + "?client_id=" + clientId + "&redirect_uri=" + redirectUri + "&service=linkedin"
+##    console.log "https://api.singly.com/oauth/authenticate?client_id=2c546e7315c4fbf5fe439fe04821925e&redirect_uri=http://localhost:3000/callback&service=linkedin"
 
 Meteor.startup ->
   $window = $ window
