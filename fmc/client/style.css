@@ -122,7 +122,7 @@ p {
     width: 90%;
     margin: 110px auto 100px auto;
     max-width: 600px;
-    min-height: 450px;
+    min-height: 415px;
     padding-bottom: 100px;
     background-color: white;
 
@@ -150,6 +150,11 @@ p {
     }
     #resume-container .title {
         font-weight: bold;
+    }
+    #resume-container .size {
+        clear: left;
+        display: inline-block;
+        margin-left:15%
     }
     #resume-container .profile-pic {
         position: absolute;
@@ -242,7 +247,7 @@ p {
     }
 
     #resume-container {
-        min-height: 550px;
+        min-height: 515px;
     }
 
     #callback-container .tagline {
@@ -260,7 +265,7 @@ p {
     }
 
     #resume-container {
-        min-height: 650px;
+        min-height: 615px;
     }
 
     #callback-container .tagline {

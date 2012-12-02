@@ -10,7 +10,9 @@ class Router extends Backbone.Router
     ":other": "index"
 
   index: ->
+    $('#rat').hide()
     $('#about-link').fadeIn()
+
     $('#container')
       .hide()
       .html(Meteor.render(Template.indexTemplate))
