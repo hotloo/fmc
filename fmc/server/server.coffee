@@ -29,7 +29,7 @@ createUser = (code)->
   userData = getIdentity(accessToken)
   console.log "userData", userData
   user = Users.findOne id: userData.id
-  if user
+  if user and user.id
     userId = user.id
   else
     userId = Users.insert userData
