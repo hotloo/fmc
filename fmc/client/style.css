@@ -33,6 +33,9 @@ header {
     height: 70px;
     background: #FFF;
 
+    /*opacity:0.8;*/
+    /*filter:alpha(opacity=80)*/
+
     -moz-box-shadow: 0 3px 4px rgba(0, 0, 0, 0.3);
     -webkit-box-shadow: 0 3px 4px rgba(0, 0, 0, 0.3);
     box-shadow: 0 3px 4px rgba(0, 0, 0, 0.3);
@@ -163,8 +166,10 @@ p {
     bottom: 30px;
     right: 30px;
     color: white;
-}
-
+    }
+    #to-start:active {
+        color: #333333;
+    }
 
 @media (max-width:500px) {
     #to-start {
@@ -180,6 +185,10 @@ p {
         margin-top: 95px;
         min-height: 200px;
         padding-bottom: 1px;
+    }
+
+    #resume-container h2 {
+        padding-top: 30px;
     }
 
     #container .tagline {
