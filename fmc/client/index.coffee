@@ -18,10 +18,12 @@ Template.bodyTemplate.events
 Template.bodyTemplate.currentUser = ->
   Meteor.user()
 
-#Template.indexTemplate.events
-#  "click #login": (event) ->
-#    event.preventDefault()
-#
+Template.resumeTemplate.events
+  "click #to-start": (event) ->
+    event.preventDefault()
+    window.router.navigate "", {trigger: true}
+
+
 #    authUrl = "https://api.singly.com/oauth/authenticate"
 #    clientId = "2c546e7315c4fbf5fe439fe04821925e"
 #    redirectUri = "http://localhost:3000/callback"

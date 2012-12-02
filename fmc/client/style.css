@@ -100,7 +100,7 @@ p {
         text-align: center;
         /*max-width: 360px;*/
         margin: 0 auto;
-        padding: 170px 30px 100px 30px;
+        padding: 170px 30px 95px 30px;
         /*margin: 50px auto;*/
         }
 
@@ -115,15 +115,16 @@ p {
 }
 
 #resume-container {
+    position: relative;
     width: 90%;
     margin: 110px auto 100px auto;
     max-width: 800px;
-    min-height: 500px;
-    padding-bottom: 50px;
+    min-height: 450px;
+    padding-bottom: 100px;
     background-color: white;
 
-    opacity:0.5;
-    filter:alpha(opacity=50)
+    opacity:0.7;
+    filter:alpha(opacity=70)
 
     /*-moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);*/
     /*-webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);*/
@@ -149,11 +150,28 @@ p {
 
 @media (max-width:800px) {
     #container .tagline {
-        padding: 170px 60px 55px 60px;
+        padding: 170px 60px 50px 60px;
     }
+    #callback-container .tagline {
+        padding: 250px 60px 50px 60px;
+    }
+
 }
 
+#to-start {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    color: white;
+}
+
+
 @media (max-width:500px) {
+    #to-start {
+        position: static;
+        margin: 30px auto;
+    }
+
     #container {
         min-height: 100%;
     }
@@ -161,6 +179,7 @@ p {
     #resume-container {
         margin-top: 95px;
         min-height: 200px;
+        padding-bottom: 1px;
     }
 
     #container .tagline {
@@ -200,11 +219,11 @@ p {
     }
 
     #resume-container {
-        min-height: 600px;
+        min-height: 550px;
     }
 
     #callback-container .tagline {
-        padding: 325px 30px 100px 30px;
+        padding: 300px 30px 100px 30px;
     }
 }
 
@@ -218,11 +237,11 @@ p {
     }
 
     #resume-container {
-        min-height: 700px;
+        min-height: 650px;
     }
 
     #callback-container .tagline {
-        padding: 375px 30px 100px 30px;
+        padding: 350px 30px 100px 30px;
     }
 }
 
@@ -242,7 +261,7 @@ p {
     width: 240px;
     border: 2px solid #333333;
     background: #333333;
-    color: white;
+    color: #ccc;
 
     /*background: white url('/in.png') no-repeat right center;*/
     }
