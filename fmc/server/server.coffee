@@ -6,20 +6,28 @@ Meteor.methods
   getAccessToken: (code) ->
 
     url = "https://api.singly.com/oauth/access_token"
-#    data =
-#      "client_id": clientId
-#      "client_secret": clientSecret
-#      "code": code
+    data =
+      "client_id": clientId
+      "client_secret": clientSecret
+      "code": code
 
     #this.unblock()
 
-    s = "client_id=#{clientId}&client_secret=#{clientSecret}&code=#{code}"
-
+#    s = "client_id=#{clientId}&client_secret=#{clientSecret}&code=#{code}"
+#    console.log s
 #    console.log "Meteor.http.post('#{url}',{data: #{JSON.stringify(data)}, function() { alert('yeah')})"
 
-    console.log "Meteor.http.post"
+#    console.log "Meteor.http.post"
 
-    result = Meteor.http.post url, {params: s}
+    result = Meteor.http.post url,
+      params:
+        client_id: clientId
+        client_secret: clientSecret
+        code: code
+
+    console.log result
+
+    console.log result.error
 
 #
 #    if result.statusCode == 200
