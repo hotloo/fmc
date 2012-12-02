@@ -5,3 +5,4 @@ atlassian-ide-plugin.xml
 .DS_Store
 
 fmc/.DS_Store
+lib/local.config.coffee
