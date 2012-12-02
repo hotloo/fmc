@@ -86,10 +86,10 @@ normalize_feature = (data) ->
 
   
 interpretTitle = (positionScore,mean,std) ->
-  console.log positionScore,mean,std
+#  console.log positionScore,mean,std
   positionScore = positionScore * std + mean
   company_score = title_score = Math.ceil(Math.sqrt(positionScore * 5))
-  console.log company_score, title_score
+#  console.log company_score, title_score
   if company_score is 5
     company_size = "10,001+ employees"
   if company_score is 4

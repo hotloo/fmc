@@ -20,7 +20,6 @@ class Router extends Backbone.Router
     $('#footer').fadeIn()
 
   callback: (params) ->
-    console.log 'test'
     return unless params
     if params.code
       console.log "getAccessToken", params.code

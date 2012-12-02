@@ -27,7 +27,6 @@ Template.resumeTemplate.currentUser = ->
 Template.resumeTemplate.resume = ->
   @currentUser ||= Meteor.user()
   obj = recommend(@currentUser.data.positions.values) if @currentUser
-  console.log obj
   obj
 
 Handlebars.registerHelper 'getYear', (date) ->

@@ -21,7 +21,6 @@ start_server = ->
     titles_coll.middle.push titles[i+2]
     titles_coll.junior.push titles[i+3]
     titles_coll.low.push titles[i+4]
-  console.log titles_coll
   Titles.remove({})
   Titles.insert(titles_coll)
 
