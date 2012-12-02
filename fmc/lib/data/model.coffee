@@ -60,13 +60,13 @@ normalize_feature = (data) ->
       try
         subdoc.endDate = Math.round((new Date(subdoc.endDate.year,subdoc.endData.month)).getTime() / 1000) if subdoc.endDate
       catch error
-        subdoc.endDate = Math.round((new Date(subdoc.endDate.year,1)).getTime() / 1000) if subdoc.endDate
+        subdoc.endDate = Math.round((new Date(subdoc.endDate.year,12)).getTime() / 1000) if subdoc.endDate
       unless subdoc.endDate
-        subdoc.endDate = Math.round((new Date(2012,12)).getTime() / 1000)
+        subdoc.endDate = Math.round((new Date(2013,1)).getTime() / 1000)
       try
         subdoc.startDate = Math.round((new Date(subdoc.startDate.year,subdoc.startDate.month)).getTime() / 1000) if subdoc.startDate
       catch error
-        subdoc.startDate = Math.round((new Date(subdoc.startDate.year,1)).getTime() / 1000) if subdoc.startDate
+        subdoc.startDate = Math.round((new Date(subdoc.startDate.year,12)).getTime() / 1000) if subdoc.startDate
       subdoc.elapsedTime = subdoc.endDate - subdoc.startDate
     featureVector = []
     for year in [year_start..year_stop]
@@ -138,31 +138,38 @@ fetch_top_samples = (data,scale,k) ->
 
 position_proposal = (sample, candidates, length_suggestions) ->
   console.log sample
-  presentPoint =  (position[doc].endDate for position in sample)
+  presentPoint = ( parseInt( position.endDate ) for position in sample.doc )
+  presentPoint = Math.max presentPoint...
   presentPoint = new Date(presentPoint * 1000)
-  presentYear = presentPoint.getYear()
+  presentYear = presentPoint.getFullYear()
   presentMonth = presentPoint.getMonth()
-  presentIndex = (presentYear - 2005) * 12.0 + presentMonth
-  console.log presentIndex,presentMonth,presentYear,presentPoint
+  presentIndex = (presentYear - 2000) * 12.0 + presentMonth + 1
   user_average = sample.featureVector.reduce (c,i) -> c += i
-  user_average = user_average / sample.length
+  user_average = user_average / sample.featureVector.length
   recommendations = []
   normalizationConstant = (candidate.distance for candidate in candidates).reduce (c,i) -> c += i
   for index in [presentIndex..presentIndex+length_suggestions]
-    weight = (candidate.weight * ( candidate.featureVector[presentIndex] - user_average )  for candidate in candidates).reduce (c,i) -> c += i
-    recommendedScore = user_average + weight / normalizationConstant
+    weight = (candidate.distance * ( candidate.featureVector[presentIndex] - user_average )  for candidate in candidates).reduce (c,i) -> c += i
+    recommendedScore = user_average + ( weight / normalizationConstant )    
     recommendations.push recommendedScore
   return recommendations
 
 position_length = (sample, candidates, length_suggesions) ->
-  presentPoint = Math.max ( (position.endDate for position in sample.doc) )
+  presentPoint = ( parseInt( position.endDate ) for position in sample.doc )
+  presentPoint = Math.max presentPoint...
   presentPoint = new Date(presentPoint * 1000)
-  presentYear = presentPoint.getYear()
+  presentYear = presentPoint.getFullYear()
   presentMonth = presentPoint.getMonth()
-  presentIndex = (presentYear - 2005) * 12.0 + presentMonth
-  mu = (candidate.elapsedTime for candidate in candidates).reduce (c,i) -> c += i
-  mu = mu + sample.elapsedTime
-  mu = mu / ( candidates.length + 1.0 )
+  presentIndex = (presentYear - 2000) * 12.0 + presentMonth
+  console.log presentIndex
+  mu_list = []
+  for candidate in candidates
+    mu_list.push (can_doc.elapsedTime for can_doc in candidate.doc)...
+  console.log mu_list
+  console.log candidates
+  mu = mu_list.reduce (c,i) -> c += i
+  mu = mu +  (position.elapsedTime for position in sample.doc).reduce (c,i) -> c += i
+  mu = mu / ( mu_list.length + sample.doc.length )
   sigma = ((candidate.elapsedTime - mu) * (candidate.elapsedTime - mu) for candidate in candidates).reduce (c,i) -> c += i
   sigma = sigma + (sample.elapsedTime - mu) * (sample.elapsedTime - mu)
   sigma = sigma / candidates.length
@@ -205,9 +212,9 @@ recommend = (user,k = 2) ->
   recommendations = []
   for userFeature in userFeatures
     [recommendedPosition,recommendedTimes] = collaborative_filtering(userFeature,features,k,cosine_similarity)
-    recommendation = []
     for i in k
-      recommendation[i] = {}
-      recommendation[i].title = interpretTitle(recommendedPosition[i],mean,std)
-      recommendation[i].time = recommendedTimes[i]
+      recommendation = {}
+      recommendation.title = interpretTitle(recommendedPosition[i],mean,std)
+      recommendation.time = recommendedTimes[i]
+      recommendations.push recommendation
   return recommendations
