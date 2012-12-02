@@ -1,16 +1,12 @@
 jstat = require 'jStat'
 fs = require 'fs'
 mongo = require 'mongodb'
-# Algorithm description
-# 1. extract features : company name, type, size, year, your length of career, starting time, previous histories
-# 2. normalize features : normalization
-# 3. collaborative filtering
-get_data = (data) ->
+
+get_data = ->
   server = new mongo.server "127.0.0.1", 27017, {}
   client = new mongo.Db 'users', server
   relevant_user = (dbErr, collection) ->
     console.log "No connection there #{dbErr}" if dbErr
-    data = []
     collection.find().nextObject (err, result) -> 
       if err 
         console.log "Find action failed #{err}"
@@ -122,5 +118,9 @@ collaborative_filtering = (test_sample, train_samples, k, dist_func) ->
   top_k_train_samples = fetch_top_samples(train_samples,dist, k)
   probable_position = position_proposal(test_sample, top_k_train_samples)
 
-recommend = (sample) ->
+recommend = (user) ->
   # Here comes the recommendation/prediction
+  positions = get_user_data()
+  features = normalize_feature(positions)
+  recommendation = collaborative_filtering(user,features)
+  return recommendation
