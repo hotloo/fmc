@@ -147,12 +147,19 @@ p {
         font-weight: bold;
     }
 
+@media (max-width:800px) {
+    #container .tagline {
+        padding: 170px 60px 55px 60px;
+    }
+}
+
 @media (max-width:500px) {
     #container {
         min-height: 100%;
     }
 
     #resume-container {
+        margin-top: 95px;
         min-height: 200px;
     }
 
@@ -180,24 +187,6 @@ p {
 
     /*#callback-container .tagline {*/
         /*padding: 225px 30px 100px 30px;*/
-    /*}*/
-/*}*/
-
-/*@media (min-width:900px) {*/
-    /*#container {*/
-        /*height: 550px;*/
-    /*}*/
-
-    /*#container .tagline {*/
-        /*padding: 210px 30px 90px 30px;*/
-    /*}*/
-
-    /*#resume-container {*/
-        /*min-height: 550px;*/
-    /*}*/
-
-    /*#callback-container .tagline {*/
-        /*padding: 275px 30px 100px 30px;*/
     /*}*/
 /*}*/
 
