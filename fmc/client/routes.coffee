@@ -18,14 +18,15 @@ class Router extends Backbone.Router
     $('#footer').fadeIn()
 
   callback: (params) ->
+    console.log 'test'
     return unless params
     if params.code
       console.log "getAccessToken", params.code
 
       $('#container')
-      .hide()
-      .html(Meteor.render(Template.callbackTemplate))
-      .fadeIn()
+        .hide()
+        .html(Meteor.render(Template.callbackTemplate))
+        .fadeIn()
 
       $('#about-link').hide()
       $('#rat').fadeIn()

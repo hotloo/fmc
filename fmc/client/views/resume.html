@@ -1,8 +1,8 @@
 <template name="resumeTemplate">
     <div id="resume-container">
-        <h2>{{name}}</h2>
-        <h3>Resume from the future!</h3>
-        <img class="profile-pic" src="{{pictureUrl}}"/>
+        <h2>{{currentUser.data.firstName}} {{currentUser.data.lastName}}</h2>
+        <h3>Your resume from the future!</h3>
+        <img class="profile-pic" src="{{currentUser.data.pictureUrl}}"/>
 
         <p><span class="year">2014-2024</span> -
         <span class="title">Title A</span></p>

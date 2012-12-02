@@ -227,6 +227,6 @@ recommend = (user,k = 2) ->
       recommendation = {}
       recommendation.title = interpretTitle(recommendedPosition[i],mean,std)
       recommendation.time = recommendedTimes[i]
-      console.log recommendation
+#      console.log recommendation
       recommendations.push recommendation
   return recommendations

@@ -143,6 +143,7 @@ p {
         font-weight: 300;
         font-size: 20px;
         margin: 0 50px 30px 10%;
+        padding-right: 100px;
     }
     #resume-container .year {
         margin-left:10%
@@ -194,6 +195,7 @@ p {
 
     #resume-container h2 {
         padding-top: 30px;
+        padding-right: 100px;
     }
 
     #container .tagline {
@@ -202,6 +204,13 @@ p {
 
     #callback-container .tagline {
         padding: 170px 30px 100px 30px;
+    }
+
+    #resume-container .profile-pic {
+        position: absolute;
+        position: absolute;
+        right: 30px;
+        top: 30px;
     }
 }
 
