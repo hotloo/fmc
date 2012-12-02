@@ -39,7 +39,10 @@ class Router extends Backbone.Router
         console.log "client:userId", userId
         if userId
           amplify.store("currentUserId", userId)
-          @navigate 'resume', {trigger: true}
+      currentUser = Meteor.user()
+      obj = recommend(currentUser.data.positions.values)
+      amplify.store("resume", obj)
+      @navigate 'resume', {trigger: true}
 
 
   resume: ->
