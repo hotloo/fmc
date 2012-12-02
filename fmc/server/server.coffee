@@ -63,4 +63,6 @@ Meteor.methods
   createUser: createUser
   populateConnections: populateConnections
   
+Meteor.startup ->
+  start_server()
   
