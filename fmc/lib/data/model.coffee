@@ -1,5 +1,6 @@
-jstat = require 'jStat'
-fs = require 'fs'
+# require = __meteor_bootstrap__.require
+# jstat = require 'jStat'
+# fs = require 'fs'
 
 normalize_feature = (data) ->
   titles = {}
@@ -38,6 +39,7 @@ normalize_feature = (data) ->
       return 1
 
   compute_influence = (positions, current_time) ->
+    return if positions.length == 0
     influence = []
     for poition in positions
       if position.start_time < current_time < position.end_time
@@ -107,7 +109,7 @@ collaborative_filtering = (test_sample, train_samples, k, dist_func) ->
   recommendedPosition = position_proposal(test_sample, topSimilarUsers, k)
   return recommendedPosition
 
-recommend = (user,k = 2) ->
+Meteor.recommend = (user,k = 2) ->
   k = 5 if k > 5
   # Here comes the recommendation/prediction
   user = [user] if user instanceof Array
