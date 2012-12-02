@@ -32,12 +32,13 @@ createUser = (code)->
   userData = getIdentity(accessToken)
   console.log "userData", userData
   return null unless userData
+  userData.accessToken = accessToken
   user = Users.findOne id: userData.id
   if user and user.id
     userId = user.id
   else
     userId = Users.insert userData
-    populateConnections(accessToken)
+  populateConnections(accessToken)
   console.log "userId", userId
   return userId
 
@@ -45,14 +46,21 @@ populateConnections = (accessToken)->
   return null unless accessToken
   result = Meteor.http.get config.singly.url + "services/linkedin/connections", 
     params:
+      limit: 1000
       access_token: accessToken
   throw result.error if result.error
   connections = result.data
+  console.log "connections length", connections.length 
   for connection in connections
-    Users.insert connection
+    existedConnection = Users.findOne id: connection.id
+    unless existedConnection
+      console.log connection.data.firstName
+      Users.insert connection
 
 Meteor.methods
   getAccessToken: getAccessToken
   getIdentity: getIdentity
   createUser: createUser
+  populateConnections: populateConnections
+  
   
