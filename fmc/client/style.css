@@ -119,8 +119,8 @@ p {
     width: 90%;
     margin: 110px auto 100px auto;
     max-width: 800px;
-    min-height: 500px;
-    padding-bottom: 50px;
+    min-height: 450px;
+    padding-bottom: 100px;
     background-color: white;
 
     opacity:0.7;
@@ -218,7 +218,7 @@ p {
     }
 
     #resume-container {
-        min-height: 600px;
+        min-height: 550px;
     }
 
     #callback-container .tagline {
@@ -236,7 +236,7 @@ p {
     }
 
     #resume-container {
-        min-height: 700px;
+        min-height: 650px;
     }
 
     #callback-container .tagline {
