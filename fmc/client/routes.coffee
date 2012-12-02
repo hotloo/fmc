@@ -18,24 +18,26 @@ class Router extends Backbone.Router
     $('#footer').fadeIn()
 
   callback: (params) ->
-    if params?.code
+    console.log 'test'
+    return unless params
+    if params.code
       console.log "getAccessToken", params.code
 
       $('#container')
-      .hide()
-      .html(Meteor.render(Template.callbackTemplate))
-      .fadeIn()
+        .hide()
+        .html(Meteor.render(Template.callbackTemplate))
+        .fadeIn()
 
       $('#about-link').hide()
       $('#rat').fadeIn()
 
-      Meteor.call "createUser", params.code, (error, userId)=>
-        console.log "--userId", userId
-        Session.set("currentUserId", userId)
-
-        goToResume = =>
+      Meteor.call "createUser", params.code, (err, userId)=>
+        console.log "client:err", err
+        console.log "client:code", params.code
+        console.log "client:userId", userId
+        if userId
+          amplify.store("currentUserId", userId) 
           @navigate 'resume', {trigger: true}
-        setTimeout(goToResume, 3000)
 
   resume: ->
     $('#rat').hide()

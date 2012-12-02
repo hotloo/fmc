@@ -15,14 +15,20 @@ Template.bodyTemplate.events
     $("html, body").stop().animate
       scrollTop: 0
       
-Template.bodyTemplate.currentUser = ->
-  Meteor.user()
 
 Template.resumeTemplate.events
   "click #to-start": (event) ->
     event.preventDefault()
     window.router.navigate "", {trigger: true}
 
+Template.resumeTemplate.currentUser = =>
+  @currentUser ||= Meteor.user()
+
+
+#Template.resumeTemplate.name = ->
+#  if Meteor.user().data
+#    Meteor.user().data.firstName + ' ' + Meteor.user().data.lastName
+#  else "Your Resume"
 
 #    authUrl = "https://api.singly.com/oauth/authenticate"
 #    clientId = "2c546e7315c4fbf5fe439fe04821925e"
