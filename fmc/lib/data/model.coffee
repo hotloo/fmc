@@ -1,31 +1,8 @@
-jstat = require 'jStat'
-fs = require 'fs'
-mongo = require 'mongodb'
-# Algorithm description
-# 1. extract features : company name, type, size, year, your length of career, starting time, previous histories
-# 2. normalize features : normalization
-# 3. collaborative filtering
-get_data = (data) ->
-  server = new mongo.server "127.0.0.1", 27017, {}
-  client = new mongo.Db 'users', server
-  relevant_user = (dbErr, collection) ->
-    console.log "No connection there #{dbErr}" if dbErr
-    data = []
-    collection.find().nextObject (err, result) -> 
-      if err 
-        console.log "Find action failed #{err}"
-      else
-        data.push result
-  client.open (err, db) -> 
-    client.connection "users", relevant_user
-  output = []
-  for data_point in data
-    output.push [company.id,company.company.size,company.title,company.start_date,company.end_data] for company in data.data.positions
-  return output
+# require = __meteor_bootstrap__.require
+# jstat = require 'jStat'
+# fs = require 'fs'
 
 normalize_feature = (data) ->
-  # define company size as 0 -> 
-  # define title 
   titles = {}
   title['top_title_examples'] = fs.readFile '../top_level.csv', utf8, content -> top_title_examples = content
   title['senior_title_examples'] = fs.readFile '../senior_level.csv', utf8, content -> senior_title_examples = content
@@ -60,38 +37,37 @@ normalize_feature = (data) ->
       return 1
     if company_size is "1-10 employess"
       return 1
-  
+
   compute_influence = (positions, current_time) ->
+    return if positions.length == 0
     influence = []
     for poition in positions
       if position.start_time < current_time < position.end_time
         influence.push ( title_influence / 5 ) * (company_influence / 5)
       else
         influence.push 0.0
-    average_influence = influence.reduce (c,i) c += i 
+    average_influence = influence.reduce (c,i) -> c += i 
     average_influence = influence / influence.length
 
-  year_start = 2005
+  year_start = 2000
   year_stop = 2013
   month_start = 1
   month_stop = 12
+  faetureMatrix = []
   for doc in data
-    doc[1] = check_company_scale(doc[0],title)
-    doc[2] = check_title(doc[2],titles)
-    doc[3] = Math.round(Date(doc[3].end_time?.year,doc[3].end_time?.month).getTime / 1000)
-    doc[4] = Math.round(Date(doc[4].end_time?.year,doc[4].end_time?.month).getTime / 1000)
-    doc[5] = if doc[4] > 0 then doc[4] - doc[3] else 0
-  feature_vector = []
-  for year in [year_start..year_stop]
-    for month in [month_start..month_stop]
-      feature_vector.push compute_influence doc, Math.round(Date(year,month).getTime / 1000)
-
-  return feature_vector
-
-
+    doc.company.size = check_company_scale(doc.company.size)
+    doc.title = check_title(doc.title,titles)
+    doc.endDate = Math.round(Date(doc.endDate?.year,doc.endData?.month).getTime / 1000)
+    doc.startDate = Math.round(Date(doc[4].startDate?.year,doc[4].startDate?.month).getTime / 1000)
+    doc.elapsedTime = if doc.endData > 0 then doc.endDate - doc.startDate else null
+    featureVector = []
+    for year in [year_start..year_stop]
+      for month in [month_start..month_stop]
+        featureVector.push compute_influence doc, Math.round(Date(year,month).getTime / 1000)
+    doc.featureVector = featureVector
+    featureMatrix.push doc
+  return featureMatrix
  
-interpret_feature = (data) ->
-
 cosine_similarity = (sample_1, sample_2) ->
   nominator = [sample_i * sample_2[i] for sample_i, i in sample_1].reduce (a,b) -> a + b
   denominator_sample_1 = [sample_i * sample_i fro sample_i in sample_1].reduce (a,b) -> a + b
@@ -104,23 +80,41 @@ fetch_top_samples = (data,scale,k) ->
   scale_with_index = ([scale_point,index] for scale_point,i in scale)
   scale_with_index.sort (left,right) ->
     if left[0] < right[0] then -1 else 1
-  sorted_indices = (sorted_item[1] for sorted_item in scale_with_index)[0:k]
+  for sorted_item in scale_with_index
+    data[sorted_item[1]].distance = sorted_item[0]
+    data[sorted_item[1]].rank = sorted_item[1]
+  topSimilarUsers = (data[sorted_item[1]] for sorted_item in scale_with_index)[0:k]
+  return topSimilarUsers
 
 position_proposal = (sample, candidates, length_suggestions) ->
-  oldest_timestamp = (Math.round(Date(company.end_time?.year,company.end_time?.year).getTime / 1000) for company in sample.positions?.values?).max ( array ) -> Math.max.apply Math,array
-  user_average = sample.reduce (c,i) -> c += i.company_performance_factor
+  presentPoint = (position.endDate for position in sample).max (array) -> 
+    Math.max.apply Math,array
+  presentPoint = Date(presentPoint * 1000)
+  presentYear = presentPoint.getYear()
+  presentMonth = presentPoint.getMonth()
+  presentIndex = presentYear - 2005 + presentMonth
+  user_average = sample.featureVector.reduce (c,i) -> c += i
   user_average = user_average / sample.length
-  recommendation_score = []
-  normalization_factor = candidates.reduce (c,i) -> c += i[0]
-  weight_average_level = (candidate_score[0] * candidate_score[1] for candidate_score in candidates if ).reduce (c,i) -> c += i 
-  feature = interpret_feature(weight_average_level)
-
+  recommendations = []
+  normalizationConstant = (candidate.distance for candidate in candidates).reduce (c,i) -> c += i
+  for index in [presentIndex..presentIndex+length_suggestions]
+    weight = (candidate.weight * ( candidate.featureVector[presentIndex] - user_average )  for candidate in candidates).reduce (c,i) -> c += i
+    recommendedScore = user_average + weight / normalizationConstant
+    recommendations.push recommendedScore
+  return recommendations
 
 collaborative_filtering = (test_sample, train_samples, k, dist_func) -> 
-  norm_test_sample = normalized_sample(test_sample)
-  dist = ( dist_func( norm_test_sample, normalized_sample( train_sample ) ) for train_sample in train_samples )
-  top_k_train_samples = fetch_top_samples(train_samples,dist, k)
-  probable_position = position_proposal(test_sample, top_k_train_samples)
+  distances = ( dist_func( test_sample.featureVector, train_sample.featureVector ) for train_sample in train_samples )
+  topSimilarUsers = fetch_top_samples(train_samples, distances, k)
+  recommendedPosition = position_proposal(test_sample, topSimilarUsers, k)
+  return recommendedPosition
 
-recommend = (sample) ->
+Meteor.recommend = (user,k = 2) ->
+  k = 5 if k > 5
   # Here comes the recommendation/prediction
+  user = [user] if user instanceof Array
+  positions = get_user_data()
+  features = normalize_feature(positions)
+  userFeature = normalize_features(user)
+  recommendation = collaborative_filtering(userFeature,features,k,cosine_similarity)
+  return recommendation

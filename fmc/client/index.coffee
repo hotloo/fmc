@@ -8,6 +8,9 @@ Template.bodyTemplate.events
 
     $("html, body").stop().animate
       scrollTop: $(target).offset().top
+      
+Template.bodyTemplate.currentUser = ->
+  Meteor.user()
 
   "click #go-up": (event) ->
     $("html, body").stop().animate
