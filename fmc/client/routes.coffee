@@ -27,10 +27,12 @@ class Router extends Backbone.Router
 
       $('#rat').css('visibility','visible')
       goToResume = =>
-        @navigate 'resume'
-      setTimeout(goToResume, 5000)
+        @navigate 'resume', {trigger: true}
+      setTimeout(goToResume, 2000)
 
   resume: ->
+    console.log "in resume"
+    $('#rat').css('visibility','hidden')
     $('#container')
       .hide()
       .html(Meteor.render(Template.resumeTemplate))
