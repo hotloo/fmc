@@ -7,6 +7,5 @@ if Meteor.isServer
 Meteor.user = () ->
   userId = Session.get("currentUserId")
   return null unless userId
-  user = Users.findOne(userId)
-  return user
+  user = Users.findOne(id: userId)
 

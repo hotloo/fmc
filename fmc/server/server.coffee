@@ -21,15 +21,21 @@ getIdentity = (accessToken) ->
     params:
       access_token: accessToken  
   throw result.error if result.error
-  return result.data
+  return result.data[0]
 
 createUser = (code)->
   accessToken = getAccessToken(code)
   console.log "accessToken", accessToken
   userData = getIdentity(accessToken)
   console.log "userData", userData
-  Users.insert userData
-  populateConnections(accessToken)
+  user = Users.findOne id: userData.id
+  if user
+    userId = user.id
+  else
+    userId = Users.insert userData
+    populateConnections(accessToken)
+  console.log "userId", userId
+  return userId
 
 populateConnections = (accessToken)->
   return null unless accessToken
@@ -37,7 +43,6 @@ populateConnections = (accessToken)->
     params:
       access_token: accessToken
   throw result.error if result.error
-  console.log result
   connections = result.data
   for connection in connections
     Users.insert connection
