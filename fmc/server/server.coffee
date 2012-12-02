@@ -31,6 +31,7 @@ createUser = (code)->
   console.log "accessToken", accessToken
   userData = getIdentity(accessToken)
   console.log "userData", userData
+  return null unless userData
   user = Users.findOne id: userData.id
   if user and user.id
     userId = user.id

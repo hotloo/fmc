@@ -2,9 +2,7 @@
 
 if Meteor.isServer
   Meteor.startup ->
-    console.log "Startup!" 
-    positions = get_user_data()
-    console.log "Started, positions: ", positions
+    positions = get_user_positions()
     titles = []
     for position in positions
       titles.push position.title
@@ -30,8 +28,16 @@ import_data = (callback)->
   )
 
 get_user_data = ()->
-  console.log "get_user_data"
   Users.find({}).fetch()
+
+get_user_positions = ()->
+  users = get_user_data()
+  positions = []
+  for i,user in users
+    console.log user
+    return [i,user] unless user.data
+    positions.concat user.data.positions.values
+  return positions
 
 get_title_data = (callback)->
   Titles.find {}, (titles) ->
