@@ -3,6 +3,7 @@ normal = (mean,std) -> ( Math.random() * std ) + mean
 
 normalize_feature = (data) ->
   titles = get_title_data().fetch()[0]
+
   check_title = (title,example_titles) ->
     if title in example_titles.top
       return 5
