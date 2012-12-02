@@ -5,7 +5,14 @@ if Meteor.isServer
   
 # User methods
 Meteor.user = () ->
-  userId = Session.get("currentUserId")
+  userId = amplify.store("currentUserId")
   return null unless userId
   user = Users.findOne(id: userId)
+  
+insertUser = (user)->
+  # Trim unnecessary data
+  attrs = ["apiStandardProfileRequest", "educations", "imAccounts", "memberUrlResources", "phoneNumbers", "recommendationReceived", "skills", "siteStandardProfileRequest", "twitterAccounts"]
+  for attr in attrs
+    delete user.data[attr] if user.data[attr]
+  Users.insert user
 

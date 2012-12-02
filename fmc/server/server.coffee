@@ -37,7 +37,7 @@ createUser = (code)->
   if user and user.id
     userId = user.id
   else
-    userId = Users.insert userData
+    userId = insertUser userData
   populateConnections(accessToken)
   console.log "userId", userId
   return userId
@@ -55,7 +55,7 @@ populateConnections = (accessToken)->
     existedConnection = Users.findOne id: connection.id
     unless existedConnection
       console.log connection.data.firstName
-      Users.insert connection
+      insertUser connection
 
 Meteor.methods
   getAccessToken: getAccessToken
