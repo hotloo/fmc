@@ -1,10 +1,17 @@
 Template.bodyTemplate.events
+  "click #logo": (event) ->
+    event.preventDefault()
+    window.router.navigate "", {trigger: true}
   "click #about-link": (event) ->
     event.preventDefault()
     target = $(event.currentTarget).attr("href")
 
     $("html, body").stop().animate
       scrollTop: $(target).offset().top
+
+  "click #go-up": (event) ->
+    $("html, body").stop().animate
+      scrollTop: 0
 
 Template.indexTemplate.events
   "click #login": ->
@@ -13,13 +20,17 @@ Template.indexTemplate.events
     redirectUri = "http://localhost:3000/callback"
 
     window.location = authUrl + "?client_id=" + clientId + "&redirect_uri=" + redirectUri + "&service=linkedin"
+    console.log authUrl + "?client_id=" + clientId + "&redirect_uri=" + redirectUri + "&service=linkedin"
 
 Meteor.startup ->
   $window = $ window
   $screen = $ "#screen"
 
   windowResized = ->
-    $screen.height($window.height())
+    height = $window.height()
+    $screen.height(height)
+    $footer = $('#footer')
+    $footer.height(height) if $footer
 
   $window.resize windowResized
 

@@ -20,7 +20,6 @@ body {
     font-weight: 300;
     background: #FFF;
     color: #333333;
-
 }
 
 header {
@@ -38,11 +37,14 @@ header {
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
 }
 
-h1 {
+header h1 {
     font-size: 50px;
     margin-left: 20px;
     float: left;
+}
 
+header h1:active {
+    margin-top: 2px;
 }
 
 p {
@@ -69,8 +71,8 @@ p {
 #rat {
     display: block;
     float: right;
-    margin: 10px 0;
-    visibility: hidden;
+    margin: 10px 10px;
+    display: none;
 }
 
 
@@ -123,8 +125,7 @@ p {
     width: 90%;
     margin: 110px auto 100px auto;
     max-width: 800px;
-    height: 300px;
-    /*min-height: 600px;*/
+    min-height: 500px;
     padding-bottom: 50px;
     background-color: white;
 
@@ -155,15 +156,31 @@ p {
 
 @media (min-width:1200px) {
     #container {
-        height: 800px;
+        height: 700px;
     }
 
-    /*#container .tagline {*/
-    /*padding: 100px 20px 30px 20px;*/
-    /*}*/
+    #container .tagline {
+        padding: 250px 30px 130px 30px;
+    }
+
+    #resume-container {
+        min-height: 700px;
+    }
+}
+
+@media (min-width:1400px) {
+    #container {
+        height: 750px;
+    }
+
     #container .tagline {
         padding: 270px 30px 150px 30px;
     }
+
+    #resume-container {
+        min-height: 750px;
+    }
+
 }
 
 .rounded {
@@ -211,9 +228,25 @@ p {
 
 #footer-content {
     width: 90%;
-    height: 200px;
+    height: 400px;
     max-width: 800px;
     padding: 20px 0 100px 0;
     margin: 0 auto;
+    margin-bottom: 60px;
     font-weight: 200;
+
+}
+
+#footer-content p {
+    line-height: 22px;
+}
+
+#go-up {
+    float: right;
+    color: #BBB;
+    text-decoration: none;
+}
+
+.singly-button {
+    float: left;
 }

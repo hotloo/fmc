@@ -1,5 +1,5 @@
 <head>
-    <title>fmc</title>
+    <title>ratrace</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <script src="backbone.queryparams.js"></script>
@@ -7,34 +7,41 @@
 
 <body>
    {{> bodyTemplate }}
-
 </body>
 
 <template name="bodyTemplate">
-    <header>
-        <a href="/"><h1>ratrace</h1></a>
+    <header id="#header">
+        <a id="logo" href=""><h1>ratrace</h1></a>
         <a id="about-link" href="#footer">About</a>
         <img id="rat" src="rat.gif"/>
-    </header>
+    </header>>
     <section id="screen">
-        <div id="container"></div>
+        <div id="container">
+        </div>
     </section>
+    {{>footerTemplate}}
+
+</template>
+
+<template name="indexTemplate">
+    <div class="tagline">So, what are you gonna be when you grow up?</div>
+    <a id="login" class="button">Find out with Linkedin</a>
+    <div class="disclaimer">We only use your past work experience.</div>
+</template>
+
+<template name="headerTemplate">
+
+</template>
+
+<template name="footerTemplate">
     <footer id="footer">
         <div id="footer-content">
             <h2>About</h2>
-            <p>Ratrace was built at Angelhack 2012. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc nec tortor nec ligula placerat adipiscing in ac ipsum.</p>
-
-            <p>Pellentesque non dui eget dui fringilla sodales. Duis interdum nisl ac magna gravida egestas. Aliquam vehicula augue sit amet justo semper ac venenatis odio pellentesque. Donec fringilla tincidunt elit, vel sollicitudin augue aliquet eu. Maecenas pharetra euismod vulputate. Curabitur auctor risus ut sem faucibus egestas. Sed egestas mattis risus, ac consectetur tortor adipiscing non. Maecenas ullamcorper nulla in neque convallis sit amet interdum justo interdum. Curabitur bibendum cursus augue et venenatis.
-            </p>
+            <p>Ratrace uses your LinkedIn profile and some hitech ninja tactics in order to show you what your future career will look like. Ratrace was built by Anders, Hung and Tele during AngelHack Fall 2012 Silicon Valley. All right reserved and all that stuff.</p>
+            <p><img class="singly-button" src="singly-button.png"/><a id="go-up" href="#header">go up &uarr;</a></p>
         </div>
+
     </footer>
-</template>
-
-
-<template name="indexTemplate">
-  <div class="tagline">So, what are you gonna be when you grow up?</div>
-  <a id="login" class="button">Find out with Linkedin</a>
-  <div class="disclaimer">We only use your past work experience.</div>
 </template>
 
 

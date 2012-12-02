@@ -6,40 +6,47 @@ class Router extends Backbone.Router
     "": "index"
     "callback": "callback"
     "resume": "resume"
+    ":other": "index"
 
   index: ->
-    console.log "index"
+    $('#about-link').fadeIn()
     $('#container')
       .hide()
       .html(Meteor.render(Template.indexTemplate))
       .fadeIn()
+    $('#footer').fadeIn()
+
+
 
   callback: (params) ->
-    console.log params
-    if params?.code
-      console.log "getAccessToken", params.code
-      userId = Meteor.call "createUser", params.code
-      Session.set "currentUserId", userId
-      $('#container')
-        .hide()
-        .html(Meteor.render(Template.callbackTemplate))
-        .fadeIn()
 
-      $('#rat').css('visibility','visible')
-      goToResume = =>
-        @navigate 'resume', {trigger: true}
-      setTimeout(goToResume, 2000)
+    if params?.code
+        console.log "getAccessToken", params.code
+        userId = Meteor.call "createUser", params.code
+        Session.set "currentUserId", userId
+        $('#container')
+          .hide()
+          .html(Meteor.render(Template.callbackTemplate))
+          .fadeIn()
+
+        $('#about-link').hide()
+        $('#rat').fadeIn()
+        goToResume = =>
+          @navigate 'resume', {trigger: true}
+        setTimeout(goToResume, 2000)
 
   resume: ->
-    console.log "in resume"
-    $('#rat').css('visibility','hidden')
+    $('#rat').hide()
+    $('#about-link').hide()
+
     $('#container')
       .hide()
       .html(Meteor.render(Template.resumeTemplate))
       .fadeIn()
+    $('#footer').hide()
 
 Meteor.startup ->
-  router = new Router()
+  window.router = new Router()
 
   Backbone.history.start
     pushState: true
