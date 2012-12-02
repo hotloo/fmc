@@ -5,12 +5,13 @@ Template.bodyTemplate.events
 
   "click #about-link": (event) ->
     event.preventDefault()
-    target = $(event.currentTarget).attr("href")
 
     $("html, body").stop().animate
-      scrollTop: $(target).offset().top
+      scrollTop: $("#footer").offset().top
 
   "click #go-up": (event) ->
+    event.preventDefault()
+
     $("html, body").stop().animate
       scrollTop: 0
       
@@ -42,7 +43,8 @@ Meteor.loginWithSingly = (options, callback)->
   loginUrl = config.singly.url + "oauth/authenticate?client_id=#{clientId}&redirect_uri=#{redirectUri}&service=#{service}"
   window.location = loginUrl
   
-Template.indexTemplate.events "click #login": ->
+Template.indexTemplate.events "click #login": (event) ->
+  event.preventDefault()
   options =
     service: "linkedin"
     clientId: "2c546e7315c4fbf5fe439fe04821925e"
