@@ -1,3 +1,6 @@
+Meteor.autosubscribe ->
+  Meteor.subscribe("users")
+
 class Router extends Backbone.Router
   routes:
     "": "index"
@@ -12,17 +15,19 @@ class Router extends Backbone.Router
       .fadeIn()
 
   callback: (params) ->
-    if params and params.code
-      console.log params
+    if params?.code
       console.log "getAccessToken", params.code
-      Meteor.call "getAccessToken", params.code
+      Meteor.call "getAccessToken", params.code, (err, accessToken)->
+        console.log "accessToken", accessToken
+        Meteor.call "getIdentity", accessToken, (err, profile)->
+      
+          console.log "profile", profile
+          Users.insert profile
 
-      Template.callbackTemplate.code = params.code
-
-      $('#container')
-        .hide()
-        .html(Meteor.render(Template.callbackTemplate))
-        .fadeIn()
+          $('#container')
+            .hide()
+            .html(Meteor.render(Template.callbackTemplate))
+            .fadeIn()
 
   resume: ->
     $('#container')

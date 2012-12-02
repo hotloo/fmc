@@ -1,35 +1,34 @@
-clientSecret = ""
-clientId = "2c546e7315c4fbf5fe439fe04821925e"
+Meteor.publish "users", () ->
+  Users.find {}, 
+    fields:
+      profile: 1
+      username: 1
+      email: 1
+      services: 1
+
+getAccessToken = (code) ->
+  console.log "code", code
+  return null unless code
+  result = Meteor.http.post config.singly.url + "oauth/access_token",
+    params:
+      client_id:      config.singly.clientId
+      client_secret:  config.singly.clientSecret
+      code:           code
+  throw result.error if result.error
+  data = result.data
+  throw new Meteor.Error 500, "Couldn't find access token" unless data
+  console.log "data", data, data.access_token
+  data.access_token
+
+getIdentity = (accessToken) ->
+  return null unless accessToken
+  result = Meteor.http.get config.singly.url + "profiles/linkedin", 
+    params:
+      access_token: accessToken  
+  throw result.error if result.error
+  return result.data
 
 Meteor.methods
-  # Method for fetching the users linkedin profile
-  getAccessToken: (code) ->
-
-    url = "https://api.singly.com/oauth/access_token"
-    data =
-      "client_id": clientId
-      "client_secret": clientSecret
-      "code": code
-
-    #this.unblock()
-
-#    s = "client_id=#{clientId}&client_secret=#{clientSecret}&code=#{code}"
-#    console.log s
-#    console.log "Meteor.http.post('#{url}',{data: #{JSON.stringify(data)}, function() { alert('yeah')})"
-
-#    console.log "Meteor.http.post"
-
-    result = Meteor.http.post url,
-      params:
-        client_id: clientId
-        client_secret: clientSecret
-        code: code
-
-    console.log result
-
-    console.log result.error
-
-#
-#    if result.statusCode == 200
-#      return true
-#    return false
+  getAccessToken: getAccessToken
+  getIdentity: getIdentity
+  
