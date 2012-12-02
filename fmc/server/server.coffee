@@ -28,7 +28,15 @@ getIdentity = (accessToken) ->
   throw result.error if result.error
   return result.data
 
+createUser = (code)->
+  accessToken = getAccessToken(code)
+  console.log "accessToken", accessToken
+  userData = getIdentity(accessToken)
+  console.log "userData", userData
+  Users.insert userData
+
 Meteor.methods
   getAccessToken: getAccessToken
   getIdentity: getIdentity
+  createUser: createUser
   

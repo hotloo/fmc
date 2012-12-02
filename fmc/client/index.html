@@ -1,18 +1,41 @@
 <head>
-  <title>fmc</title>
-  <script src="backbone.queryparams.js"></script>
+    <title>fmc</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <script src="backbone.queryparams.js"></script>
 </head>
 
 <body>
-<h1>fmc</h1>
-<div id="container"></div>
+   {{> bodyTemplate }}
+
 </body>
 
-<template name="indexTemplate">
-  <p>Find out what your going to be when you grow up</p>
-  <a id="login" class="button rounded">Log in with Linkedin<a/>
+<template name="bodyTemplate">
+    <header>
+        <a href="/"><h1>ratrace</h1></a>
+        <a id="about-link" href="#footer">About</a>
+        <img id="rat" src="rat.gif"/>
+    </header>
+    <section id="screen">
+        <div id="container"></div>
+    </section>
+    <footer id="footer">
+        <div id="footer-content">
+            <h2>About</h2>
+            <p>Ratrace was built at Angelhack 2012. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc nec tortor nec ligula placerat adipiscing in ac ipsum.</p>
+
+            <p>Pellentesque non dui eget dui fringilla sodales. Duis interdum nisl ac magna gravida egestas. Aliquam vehicula augue sit amet justo semper ac venenatis odio pellentesque. Donec fringilla tincidunt elit, vel sollicitudin augue aliquet eu. Maecenas pharetra euismod vulputate. Curabitur auctor risus ut sem faucibus egestas. Sed egestas mattis risus, ac consectetur tortor adipiscing non. Maecenas ullamcorper nulla in neque convallis sit amet interdum justo interdum. Curabitur bibendum cursus augue et venenatis.
+            </p>
+        </div>
+    </footer>
 </template>
 
+
+<template name="indexTemplate">
+  <div class="tagline">So, what are you gonna be when you grow up?</div>
+  <a id="login" class="button">Find out with Linkedin</a>
+  <div class="disclaimer">We only use your past work experience.</div>
+</template>
 
 
 
