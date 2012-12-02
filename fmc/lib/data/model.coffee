@@ -44,7 +44,10 @@ normalize_feature = (data) ->
       else
         influence.push 0.0
     try
-      average_influence = influence.reduce (c,i) -> c += i 
+      if influence.length == 1
+        average_influence = influence[0] 
+      else
+        average_influence = influence.reduce (c,i) -> c += i 
       average_influence = average_influence / influence.length
     catch error
       average_influence = 0.0
