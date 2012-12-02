@@ -17,7 +17,7 @@ getAccessToken = (code) ->
 
 getIdentity = (accessToken) ->
   return null unless accessToken
-  result = Meteor.http.get config.singly.url + "profiles/linkedin", 
+  result = Meteor.http.get config.singly.url + "services/linkedin/self", 
     params:
       access_token: accessToken  
   throw result.error if result.error
@@ -29,6 +29,18 @@ createUser = (code)->
   userData = getIdentity(accessToken)
   console.log "userData", userData
   Users.insert userData
+  populateConnections(accessToken)
+
+populateConnections = (accessToken)->
+  return null unless accessToken
+  result = Meteor.http.get config.singly.url + "services/linkedin/connections", 
+    params:
+      access_token: accessToken
+  throw result.error if result.error
+  console.log result
+  connections = result.data
+  for connection in connections
+    Users.insert connection
 
 Meteor.methods
   getAccessToken: getAccessToken
