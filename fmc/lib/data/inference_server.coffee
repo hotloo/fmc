@@ -27,7 +27,7 @@ start_server = ->
 
 
 get_user_data = ()->
-  Users.find({}).fetch()
+  Users.find({"data.positions": {$ne: null}}).fetch()
 
 get_user_positions = ()->
   users = get_user_data()
