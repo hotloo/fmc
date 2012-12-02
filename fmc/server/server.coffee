@@ -1,10 +1,10 @@
+clientSecret = ""
 clientId = "2c546e7315c4fbf5fe439fe04821925e"
-clientSecret = "df4c92d511b093590579aace47268d5d"
 
 Meteor.methods
-
   # Method for fetching the users linkedin profile
   getAccessToken: (code) ->
+
     url = "https://api.singly.com/oauth/access_token"
 #    data =
 #      "client_id": clientId
@@ -20,8 +20,6 @@ Meteor.methods
     console.log "Meteor.http.post"
 
     result = Meteor.http.post url, {params: s}
-
-    console.log result
 
 #
 #    if result.statusCode == 200
