@@ -5,17 +5,144 @@
     margin: 0;
 }
 
+html, body {
+    width: 100%;
+    background-color: #333333;
+}
+
+a {
+    color: #333333;
+    font-size: 16px;
+}
+
 body {
     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
     font-weight: 300;
+    background: #FFF;
+    color: #333333;
+
 }
 
-
-#container, body>h1 {
-    max-width: 360px;
+header {
+    position: absolute;
+    z-index: 1000;
+    top: 0;
+    left: 0;
     width: 100%;
-    margin: 10px auto;
+
+    height: 70px;
+    background: #FFF;
+
+    -moz-box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
 }
+
+h1 {
+    font-size: 50px;
+    margin-left: 20px;
+    float: left;
+
+}
+
+p {
+    margin-bottom: 20px;
+}
+
+#about-link {
+    float: right;
+    line-height: 50px;
+    padding: 0 10px;
+    margin: 9px 10px;
+    border: 1px solid #FFF;
+    text-decoration: none;
+    color: #333333;
+
+    }
+    #about-link:hover {
+        border: 1px solid #DDD;
+    }
+    #about-link:active {
+        background-color: #DDD;
+    }
+
+#rat {
+    display: block;
+    float: right;
+    margin: 10px 0;
+    /*visibility: hidden;*/
+}
+
+
+#screen {
+    background-color: #333333;
+
+}
+
+#container{
+    position: absolute;
+    top: 0;
+    /*max-width: 360px;*/
+    background: white url('/rat.png') no-repeat center top;
+    background-size: cover;
+    width: 100%;
+    height: 500px;
+    /*margin: 10px auto;*/
+    }
+    #container .tagline {
+        font-size: 34px;
+        text-align: center;
+        /*max-width: 360px;*/
+        margin: 0 auto;
+        padding: 170px 30px 100px 30px;
+        /*margin: 50px auto;*/
+        }
+        @media (max-width:500px) {
+            #container {
+                height: 350px;
+                height: 100%;
+            }
+
+            #container .tagline {
+                padding: 100px 20px 30px 20px;
+            }
+
+            #callback-container .tagline {
+                padding: 170px 30px 100px 30px;
+            }
+        }
+
+#resume-container {
+    width: 90%;
+    margin: 120px auto 100px auto;
+    max-width: 800px;
+    min-height: 600px;
+    background-color: white;
+
+    opacity:0.7;
+    filter:alpha(opacity=70)
+
+    /*-moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);*/
+    /*-webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);*/
+    /*box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);*/
+    }
+    #resume-container h2 {
+        font-size: 40px;
+        padding-top: 60px;
+        margin: 0 50px 20px 10%;
+
+    }
+    #resume-container h3 {
+        font-weight: 300;
+        font-size: 20px;
+        margin: 0 50px 40px 10%;
+    }
+    #resume-container .year {
+        margin-left:10%
+    }
+    #resume-container .title {
+        font-weight: bold;
+    }
 
 .rounded {
     -webkit-border-radius: 10px;
@@ -24,17 +151,47 @@ body {
 }
 
 .button {
-    margin: 10px auto 10px auto;
-    text-align: left;
-    padding-left: 15px;
+    margin: 0 auto;
+    text-align: center;
     font-size: 20px;
     display: block;
     height: 60px;
     line-height: 60px;
     width: 240px;
-    border: 3px solid #333333;
-    background: white url('/in.png') no-repeat right center;
+    border: 2px solid #333333;
+    background: #333333;
+    color: white;
+
+    /*background: white url('/in.png') no-repeat right center;*/
+    }
+    .button:hover {
+        cursor: pointer;
     }
     .button:active {
-        margin: 12px auto 8px auto;
+        /*margin: 12px auto 8px auto;*/
+        background: none;
+        color: #333333;
     }
+
+#footer {
+    color: #BBB;
+    background: #333333;
+    width: 100%;
+    margin: 0;
+}
+
+#footer h2 {
+    font-size: 34px;
+    font-weight: 300;
+    margin-bottom: 20px;
+
+}
+
+#footer-content {
+    width: 90%;
+    height: 200px;
+    max-width: 800px;
+    padding: 20px 0 100px 0;
+    margin: 0 auto;
+    font-weight: 200;
+}
