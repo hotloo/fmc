@@ -21,8 +21,17 @@ Template.resumeTemplate.events
     event.preventDefault()
     window.router.navigate "", {trigger: true}
 
-Template.resumeTemplate.currentUser = =>
+Template.resumeTemplate.currentUser = ->
   @currentUser ||= Meteor.user()
+  
+Template.resumeTemplate.resume = ->
+  @currentUser ||= Meteor.user()
+  obj = recommend(@currentUser.data.positions.values) if @currentUser
+  console.log obj
+  obj
+
+Handlebars.registerHelper 'getYear', (date) ->
+  (new Date(date * 1000)).getFullYear()
 
 
 #Template.resumeTemplate.name = ->

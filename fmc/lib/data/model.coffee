@@ -104,7 +104,7 @@ interpretTitle = (positionScore,mean,std) ->
   if company_score is 1
     company_size = "1-10 employess"
   else
-    company_size = "Seems tricky size"
+    company_size = "Not available"
   
   titles = get_title_data().fetch()[0]
 

@@ -38,7 +38,7 @@ class Router extends Backbone.Router
         console.log "client:code", params.code
         console.log "client:userId", userId
         if userId
-          amplify.store("currentUserId", userId) 
+          amplify.store("currentUserId", userId)
           @navigate 'resume', {trigger: true}
 
 
