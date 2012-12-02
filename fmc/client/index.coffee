@@ -9,7 +9,11 @@ Template.bodyTemplate.events
       scrollTop: $(target).offset().top
 
 Template.indexTemplate.events
-  "click #login": ->
+  "click #login": (event) ->
+    console.log event
+
+    $('#login').addClass('clicked').text('')
+
     authUrl = "https://api.singly.com/oauth/authenticate"
     clientId = "2c546e7315c4fbf5fe439fe04821925e"
     redirectUri = "http://localhost:3000/callback"

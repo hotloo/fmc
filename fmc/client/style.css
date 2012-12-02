@@ -70,7 +70,7 @@ p {
     display: block;
     float: right;
     margin: 10px 0;
-    /*visibility: hidden;*/
+    visibility: hidden;
 }
 
 
@@ -169,8 +169,11 @@ p {
     }
     .button:active {
         /*margin: 12px auto 8px auto;*/
-        background: none;
+        background: white;
         color: #333333;
+    }
+    .button.clicked {
+        background: white url('/rat.gif') no-repeat center center;
     }
 
 #footer {

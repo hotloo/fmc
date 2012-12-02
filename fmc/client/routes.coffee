@@ -14,12 +14,12 @@ class Router extends Backbone.Router
       .html(Meteor.render(Template.indexTemplate))
       .fadeIn()
 
-  callback: (params) ->
+  callback: (params) =>
     if params?.code
       console.log "getAccessToken", params.code
       Meteor.call "getAccessToken", params.code, (err, accessToken)->
         console.log "accessToken", accessToken
-        Meteor.call "getIdentity", accessToken, (err, profile)->
+        Meteor.call "getIdentity", accessToken, (err, profile) ->
       
           console.log "profile", profile
           Users.insert profile
@@ -28,6 +28,11 @@ class Router extends Backbone.Router
             .hide()
             .html(Meteor.render(Template.callbackTemplate))
             .fadeIn()
+
+          $('#rat').css('visibility','visible')
+          goToResume = =>
+            @navigate 'resume'
+          setTimeout(goToResume, 5000)
 
   resume: ->
     $('#container')
