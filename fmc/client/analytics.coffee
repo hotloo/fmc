@@ -8,5 +8,5 @@ _gaq.push ["_trackPageview"]
   ga.src = ((if "https:" is document.location.protocol then "https://ssl" else "http://www")) + ".google-analytics.com/ga.js"
   s = document.getElementsByTagName("script")[0]
   s.parentNode.insertBefore ga, s
-  console.log "analytics on"
+#  console.log "analytics on"
 )()

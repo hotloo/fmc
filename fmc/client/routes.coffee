@@ -10,6 +10,12 @@ class Router extends Backbone.Router
     ":other": "index"
 
   index: ->
+#    currentUser = Meteor.user()
+#    if currentUser
+#      obj = recommend(currentUser.data.positions.values)
+#      amplify.store("resume", obj)
+#      Session.set("resume",obj)
+
     $('#rat').hide()
     $('#about-link').fadeIn()
 
@@ -22,7 +28,7 @@ class Router extends Backbone.Router
   callback: (params) ->
     return unless params
     if params.code
-      console.log "getAccessToken", params.code
+#      console.log "getAccessToken", params.code
 
       $('#container')
         .hide()
@@ -38,13 +44,21 @@ class Router extends Backbone.Router
         console.log "client:userId", userId
         if userId
           amplify.store("currentUserId", userId)
-      currentUser = Meteor.user()
-      obj = recommend(currentUser.data.positions.values)
-      amplify.store("resume", obj)
-      @navigate 'resume', {trigger: true}
+          currentUser = Users.findOne(id:userId)
+#          if currentUser
+#            obj = recommend(currentUser.data.positions.values)
+#            console.log "test"
+#            amplify.store("resume", obj)
+#            Session.set("resume",obj)
+        @navigate 'resume', {trigger: true}
+
 
 
   resume: ->
+    currentUser = Meteor.user()
+    if currentUser
+      obj = recommend(currentUser.data.positions.values)
+      amplify.store("resume", obj)
     $('#rat').hide()
     $('#about-link').hide()
 

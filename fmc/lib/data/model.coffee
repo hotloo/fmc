@@ -161,13 +161,23 @@ position_proposal = (sample, candidates, length_suggestions) ->
   presentYear = presentPoint.getFullYear()
   presentMonth = presentPoint.getMonth()
   presentIndex = (presentYear - 2000) * 12.0 + presentMonth + 1
-  user_average = sample.featureVector.reduce (c,i) -> c += i
+  try
+    user_average = sample.featureVector.reduce (c,i) -> c += i
+  catch error
+    user_average = sample.featureVector[0]
   user_average = user_average / sample.featureVector.length
   recommendations = []
-  normalizationConstant = (candidate.distance for candidate in candidates).reduce (c,i) -> c += i
+  try
+    normalizationConstant = (candidate.distance for candidate in candidates).reduce (c,i) -> c += i
+  catch error
+    normalizationConstant = (candidate.distance for candidate in candidates)[0]
+
   for index in [presentIndex..presentIndex+length_suggestions]
-    weight = (candidate.distance * ( candidate.featureVector[presentIndex] - user_average )  for candidate in candidates).reduce (c,i) -> c += i
-    recommendedScore = user_average + ( weight / normalizationConstant )    
+    try
+      weight = (candidate.distance * ( candidate.featureVector[presentIndex] - user_average )  for candidate in candidates).reduce (c,i) -> c += i
+    catch error
+      weight = (candidate.distance * ( candidate.featureVector[presentIndex] - user_average )  for candidate in candidates)[0]
+    recommendedScore = user_average + ( weight / normalizationConstant )
     recommendations.push recommendedScore
   return recommendations
 
@@ -182,13 +192,25 @@ position_length = (sample, candidates, length_suggestions) ->
   for candidate in candidates
     mu_list.push (can_doc.elapsedTime for can_doc in candidate.doc)...
   mu_list = mu_list.filter (mu)-> not isNaN(mu)
-  mu = mu_list.reduce (c,i) -> c += i
+  try
+    mu = mu_list.reduce (c,i) -> c += i
+  catch error
+    mu = mu_list[0]
   mu_sample_list = (position.elapsedTime for position in sample.doc).filter (mu) -> not isNaN(mu)
-  mu = mu + mu_sample_list.reduce (c,i) -> c+= i
+  try
+    mu = mu + mu_sample_list.reduce (c,i) -> c+= i
+  catch error
+    mu = mu + mu_sample_list[0]
   mu = mu / ( mu_list.length + mu_sample_list.length )
-  sigma = ( (num - mu) * (num - mu) for num in mu_list).reduce (c,i) -> c += i
-  sigma = sigma + ( (num - mu) * (num - mu) for num in mu_sample_list).reduce (c,i) -> c += i
-  sigma = sigma / ( mu_list.length + mu_sample_list.length - 1)  
+  try
+    sigma = ( (num - mu) * (num - mu) for num in mu_list).reduce (c,i) -> c += i
+  catch error
+    sigma = ( (num - mu) * (num - mu) for num in mu_list)[0]
+  try
+    sigma = sigma + ( (num - mu) * (num - mu) for num in mu_sample_list).reduce (c,i) -> c += i
+  catch error
+    sigma = sigma + ( (num - mu) * (num - mu) for num in mu_sample_list)[0]
+  sigma = sigma / ( mu_list.length + mu_sample_list.length - 1)
   std = Math.sqrt(sigma)
   length = []
   for i in [0..length_suggestions]
@@ -224,9 +246,15 @@ recommend = (user,k = 2) ->
   positions = get_user_positions()
   features = normalize_feature(positions)
   for feature,index in features
-    mean = feature.featureVector.reduce (c,i) -> c += i
+    try
+      mean = feature.featureVector.reduce (c,i) -> c += i
+    catch error
+      mean = feature.featureVector[0]
     mean = mean / feature.featureVector.length
-    sigma = ( (featureVectorIndex - mean) * (featureVectorIndex - mean) for featureVectorIndex in feature.featureVector).reduce (c,i) -> c += i
+    try
+      sigma = ( (featureVectorIndex - mean) * (featureVectorIndex - mean) for featureVectorIndex in feature.featureVector).reduce (c,i) -> c += i
+    catch error
+      sigma = ( (featureVectorIndex - mean) * (featureVectorIndex - mean) for featureVectorIndex in feature.featureVector)[0]
     std = Math.sqrt( sigma / (feature.featureVector.length - 1 ) )
     features[index].normalizedFeatures = ( (feature.featureVectorIndex - mean) / std for featureVectorIndex in feature.featureVector)
   userFeatures = normalize_feature(user)

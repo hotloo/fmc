@@ -25,7 +25,10 @@ Template.resumeTemplate.currentUser = ->
   @currentUser ||= Meteor.user()
   
 Template.resumeTemplate.resume = ->
-  amplify.store("resume")
+  # amplify.store("resume")
+#  Session.get("resume")
+  if Meteor.user()
+    recommend(Meteor.user().data.positions.values)
 
 Handlebars.registerHelper 'getYear', (date) ->
   (new Date(date * 1000)).getFullYear()
