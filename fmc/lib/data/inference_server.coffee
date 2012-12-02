@@ -8,9 +8,10 @@ if Meteor.isServer
       titles.push position.title
     titles_coll = {}
     i = 0
+    
     while i < titles.length
       i += 5
-      return if i + 5 > titles_coll.length
+      return null if i + 5 > titles.length
       titles_coll.top = titles[i]
       titles_coll.senior = titles[i+1]
       titles_coll.middle = titles[i+2]
@@ -33,10 +34,11 @@ get_user_data = ()->
 get_user_positions = ()->
   users = get_user_data()
   positions = []
-  for i,user in users
-    console.log user
-    return [i,user] unless user.data
-    positions.concat user.data.positions.values
+  for user in users
+    continue unless user.data 
+    continue unless user.data.positions
+    values = user.data.positions.values
+    positions.push values...
   return positions
 
 get_title_data = (callback)->
