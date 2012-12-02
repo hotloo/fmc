@@ -43,8 +43,11 @@ normalize_feature = (data) ->
         influence.push ( position.title / 5 ) * (position.company_size / 5)
       else
         influence.push 0.0
-    average_influence = influence.reduce (c,i) -> c += i 
-    average_influence = average_influence / influence.length
+    try
+      average_influence = influence.reduce (c,i) -> c += i 
+      average_influence = average_influence / influence.length
+    catch error
+      average_influence = 0.0
     return average_influence
 
   year_start = 2000
@@ -126,11 +129,14 @@ interpretTitle = (positionScore,mean,std) ->
   return info
  
 cosine_similarity = (sample_1, sample_2) ->
-  nominator = (sample_i * sample_2[i] for sample_i, i in sample_1).reduce (a,b) -> a + b
-  denominator_sample_1 = (sample_i * sample_i for sample_i in sample_1).reduce (a,b) -> a + b
-  denominator_sample_1 = Math.sqrt(denominator_sample_1)
-  denominator_sample_2 = (sample_i * sample_i for sample_i in sample_2).reduce (a,b) -> a + b
-  denominator_sample_2 = Math.sqrt(denominator_sample_2)
+  try
+    nominator = (sample_i * sample_2[i] for sample_i, i in sample_1).reduce (a,b) -> a + b
+    denominator_sample_1 = (sample_i * sample_i for sample_i in sample_1).reduce (a,b) -> a + b
+    denominator_sample_1 = Math.sqrt(denominator_sample_1)
+    denominator_sample_2 = (sample_i * sample_i for sample_i in sample_2).reduce (a,b) -> a + b
+    denominator_sample_2 = Math.sqrt(denominator_sample_2)
+  catch error
+    return 1.0
   if denominator_sample_1 is 0.0 or denominator_sample_2 is 0.0 then 0.0 else nominator / ( denominator_sample_1 * denominator_sample_2 )
 
 fetch_top_samples = (data,scale,k) ->
@@ -172,7 +178,7 @@ position_length = (sample, candidates, length_suggestions) ->
   for candidate in candidates
     mu_list.push (can_doc.elapsedTime for can_doc in candidate.doc)...
   mu_list = mu_list.filter (mu)-> not isNaN(mu)
-  mu = mu_list.reduce (c,i) -> c += 1
+  mu = mu_list.reduce (c,i) -> c += i
   mu_sample_list = (position.elapsedTime for position in sample.doc).filter (mu) -> not isNaN(mu)
   mu = mu + mu_sample_list.reduce (c,i) -> c+= i
   mu = mu / ( mu_list.length + mu_sample_list.length )
